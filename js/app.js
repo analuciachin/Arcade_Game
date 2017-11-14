@@ -17,7 +17,11 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = this.x + this.speed * dt;
+    if (this.x < 450) {
+        this.x = this.x + this.speed * dt;
+    } else {
+        this.x = -10;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -36,12 +40,33 @@ var Player = function() {
 };
 
 Player.prototype.update = function(dt) {
-
-    if(this.keyPressed === 'left') {
-        console.log(this.keyPressed);
-        console.log(this.x);
+    //console.log(player.y);
+    if (this.keyPressed === 'left' && this.x > 0) {
         this.x = this.x - 100;
-        console.log(this.x);
+    }
+    if (this.keyPressed === 'right' && this.x < 400) {
+        this.x = this.x + 100;
+    }
+    if (this.keyPressed === 'down' && this.y < 400) {
+        this.y = this.y + 90;
+    }
+    if (this.keyPressed === 'up' && this.y > -50) {
+        this.y = this.y - 90;
+    }
+
+    this.keyPressed = undefined;
+
+    for(i=0; i<allEnemies.length; i++) {
+        if(player.y === allEnemies[i].y && (player.x - allEnemies[i].x > 0 
+            && player.x - allEnemies[i].x < 50)) { 
+                reset();
+        }
+    }
+
+    if(player.y === -50) {
+        setTimeout(function(){
+            reset();
+        }, 800);
     }
 };
 
@@ -53,13 +78,17 @@ Player.prototype.handleInput = function(keyPressed) {
     this.keyPressed = keyPressed;
 };
 
+reset = function() {
+    player.x = 200;
+    player.y = 400;
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
 var allEnemies = [];
-allEnemies.push(new Enemy(0,50), new Enemy(0,100), new Enemy(0,30));
+allEnemies.push(new Enemy(0,220), new Enemy(0,130), new Enemy(0,40));
 
 
 var player = new Player();
