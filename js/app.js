@@ -41,6 +41,7 @@ var Player = function() {
 };
 
 Player.prototype.update = function(dt) {
+    var score = document.querySelector('span.score');
 
     if (this.keyPressed === 'left' && this.x > 0) {
         this.x = this.x - 100;
@@ -54,21 +55,23 @@ Player.prototype.update = function(dt) {
     if (this.keyPressed === 'up' && this.y > -50) {
         this.y = this.y - 90;
     }
-
-    this.keyPressed = undefined;
-
-    if(this.y === -50) { 
+    if (this.keyPressed === 'up' && this.y === -50) {
+        this.score = this.score + 1;
+        score.innerHTML = this.score;
         setTimeout(function() {
             reset();
         }, 800);
-        //this.score = this.score + 1;
-        //console.log(this.score);
     }
+
+
+    this.keyPressed = undefined;
 
     for(i=0; i<allEnemies.length; i++) {
         if(player.y === allEnemies[i].y && (player.x - allEnemies[i].x > 0 
-            && player.x - allEnemies[i].x < 50)) { 
-                reset();
+        && player.x - allEnemies[i].x < 50)) { 
+            reset();
+            player.score = player.score - 1;
+            score.innerHTML = player.score;
         }
     }
 };
