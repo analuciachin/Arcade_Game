@@ -1,4 +1,5 @@
-// Enemies our player must avoid
+//**************** Enemy **********************//
+
 var Enemy = function(x,y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -33,6 +34,8 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
+
+//****************** Player ************************//
 var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = 200;
@@ -40,8 +43,9 @@ var Player = function() {
     this.score = 0;
 };
 
-Player.prototype.update = function(dt) {
+Player.prototype.update = function() {
     var score = document.querySelector('span.score');
+    //console.log(player.y);
 
     if (this.keyPressed === 'left' && this.x > 0) {
         this.x = this.x - 100;
@@ -74,6 +78,7 @@ Player.prototype.update = function(dt) {
             score.innerHTML = player.score;
         }
     }
+    
 };
 
 Player.prototype.render = function() {
@@ -89,6 +94,19 @@ reset = function() {
     player.y = 400;
 }
 
+//****************** Heart ***********************//
+
+var Heart = function(x,y) {
+    this.sprite = 'images/Heart.png';
+    this.x = 300;
+    this.y = 220;
+};
+
+
+Heart.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -98,6 +116,8 @@ allEnemies.push(new Enemy(0,220), new Enemy(0,130), new Enemy(0,40));
 
 
 var player = new Player();
+
+var heart = new Heart();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
