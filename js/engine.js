@@ -155,6 +155,12 @@ var Engine = (function(global) {
 
         player.render();
         heart.render();
+        key.render();
+        star.render();
+
+        allRocks.forEach(function(rock) {
+            rock.render();
+        });
     }
 
     /* This function does nothing but it could have been a good place to
@@ -175,7 +181,10 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-        'images/Heart.png'
+        'images/Heart.png',
+        'images/Key.png',
+        'images/Star.png',
+        'images/Rock.png'
     ]);
     Resources.onReady(init);
 

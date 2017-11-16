@@ -78,7 +78,23 @@ Player.prototype.update = function() {
             score.innerHTML = player.score;
         }
     }
+
+
+    if (player.x === heart.x && player.y === heart.y) {
+        heart.x = -100;
+        heart.y = -100;
+    }
     
+    if (player.x === key.x && player.y === key.y) {
+        key.x = -100;
+        key.y = -100;
+    }
+    
+    if (player.x === star.x && player.y === star.y) {
+        star.x = -100;
+        star.y = -100;
+    }
+
 };
 
 Player.prototype.render = function() {
@@ -98,12 +114,54 @@ reset = function() {
 
 var Heart = function(x,y) {
     this.sprite = 'images/Heart.png';
-    this.x = 300;
-    this.y = 220;
+    this.x = x;
+    this.y = y;
 };
 
 
 Heart.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+//****************** Key *************************//
+
+var Key = function(x,y) {
+    this.sprite = 'images/Key.png';
+    this.x = x;
+    this.y = y;
+};
+
+
+Key.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+//***************** Star ************************//
+
+var Star = function(x,y) {
+    this.sprite = 'images/Star.png';
+    this.x = x;
+    this.y = y;
+};
+
+
+Star.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+//***************** Rock ************************//
+
+var Rock = function(x,y) {
+    this.sprite = 'images/Rock.png';
+    this.x = x;
+    this.y = y;
+};
+
+
+Rock.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -117,7 +175,14 @@ allEnemies.push(new Enemy(0,220), new Enemy(0,130), new Enemy(0,40));
 
 var player = new Player();
 
-var heart = new Heart();
+var heart = new Heart(400,220);
+
+var key = new Key(0,40);
+
+var star = new Star(200,130);
+
+var allRocks = [];
+allRocks.push(new Rock (200,220));
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
