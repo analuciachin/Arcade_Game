@@ -41,10 +41,16 @@ var Player = function() {
     this.x = 200;
     this.y = 400;
     this.score = 0;
+    this.currentX = 0;
+    this.currentY = 0;
+    this.collectables = 0;
 };
 
 Player.prototype.update = function() {
     var score = document.querySelector('span.score');
+    var collectables = document.querySelector('span.collectables'); 
+    this.currentX = player.x;
+    this.currentY = player.y;
     //console.log(player.y);
 
     if (this.keyPressed === 'left' && this.x > 0) {
@@ -70,8 +76,8 @@ Player.prototype.update = function() {
 
     this.keyPressed = undefined;
 
-    for(i=0; i<allEnemies.length; i++) {
-        if(player.y === allEnemies[i].y && (player.x - allEnemies[i].x > 0 
+    for (var i=0; i<allEnemies.length; i++) {
+        if (player.y === allEnemies[i].y && (player.x - allEnemies[i].x > 0 
         && player.x - allEnemies[i].x < 50)) { 
             reset();
             player.score = player.score - 1;
@@ -81,18 +87,31 @@ Player.prototype.update = function() {
 
 
     if (player.x === heart.x && player.y === heart.y) {
+        this.collectables = this.collectables + 1;
+        collectables.innerHTML = this.collectables;
         heart.x = -100;
         heart.y = -100;
     }
     
     if (player.x === key.x && player.y === key.y) {
+        this.collectables = this.collectables + 1;
+        collectables.innerHTML = this.collectables;
         key.x = -100;
         key.y = -100;
     }
     
     if (player.x === star.x && player.y === star.y) {
+        this.collectables = this.collectables + 1;
+        collectables.innerHTML = this.collectables;
         star.x = -100;
         star.y = -100;
+    }
+
+    for (var i=0; i<allRocks.length; i++) {
+        if (player.x === allRocks[i].x && player.y === allRocks[i].y) {
+            player.x = this.currentX;
+            player.y = this.currentY;
+        }
     }
 
 };
@@ -175,14 +194,14 @@ allEnemies.push(new Enemy(0,220), new Enemy(0,130), new Enemy(0,40));
 
 var player = new Player();
 
-var heart = new Heart(400,220);
+var heart = new Heart(200,130);
 
 var key = new Key(0,40);
 
-var star = new Star(200,130);
+var star = new Star(400,40);
 
 var allRocks = [];
-allRocks.push(new Rock (200,220));
+allRocks.push(new Rock (400,130), new Rock (200,220));
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
