@@ -91,6 +91,9 @@ Player.prototype.update = function() {
         collectables.innerHTML = this.collectables;
         heart.x = -100;
         heart.y = -100;
+        if (this.collectables === 3) {
+            showResults();
+        }
     }
     
     if (player.x === key.x && player.y === key.y) {
@@ -98,6 +101,9 @@ Player.prototype.update = function() {
         collectables.innerHTML = this.collectables;
         key.x = -100;
         key.y = -100;
+        if (this.collectables === 3) {
+            showResults();
+        }
     }
     
     if (player.x === star.x && player.y === star.y) {
@@ -105,6 +111,9 @@ Player.prototype.update = function() {
         collectables.innerHTML = this.collectables;
         star.x = -100;
         star.y = -100;
+        if (this.collectables === 3) {
+            showResults();
+        }
     }
 
     for (var i=0; i<allRocks.length; i++) {
@@ -112,6 +121,17 @@ Player.prototype.update = function() {
             player.x = this.currentX;
             player.y = this.currentY;
         }
+    }
+   
+     
+    function showResults() {
+        //var scoreResult = document.querySelector('span.scoreResult');
+        //var collectablesResult = document.querySelector('span.collectablesResult');
+        setTimeout (function() {
+        document.getElementById('gameScore').style.display = 'block';
+        //scoreResult.innerHTML = this.score;
+        //collectablesResult.innerHTML = this.collectables;
+        },5000);
     }
 
 };
@@ -127,7 +147,8 @@ Player.prototype.handleInput = function(keyPressed) {
 reset = function() {
     player.x = 200;
     player.y = 400;
-}
+};
+
 
 //****************** Heart ***********************//
 
@@ -215,3 +236,22 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
+
+/*
+* Modal popup
+*/ 
+var modal = document.getElementById('gameScore');
+var noButton = document.getElementById('noButton');
+var yesButton = document.getElementById('yesButton'); 
+var gameOver = document.getElementById('gameOver');
+
+/*noButton.addEventListener('click', function() {
+    modal.style.display = 'none';
+    gameOver.style.display = 'block';
+})
+
+yesButton.addEventListener('click', function() {
+    window.location.reload();
+})*/
