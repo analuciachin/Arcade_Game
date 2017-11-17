@@ -51,10 +51,29 @@ Player.prototype.update = function() {
     var collectables = document.querySelector('span.collectables');
     var gameScoreModal = document.getElementById('gameScore');
     var resetButton = document.getElementById('resetButton'); 
+    var char1 = document.getElementById('char1');
+    var char2 = document.getElementById('char2');
 
     this.currentX = player.x;
     this.currentY = player.y;
     //console.log(player.y);
+
+
+    var character = ['images/char-horn-girl.png','images/char-cat-girl.png'];
+    var choosePlayer = document.getElementById('choosePlayer');
+
+    char1.addEventListener('click', function(){
+        this.sprite = character[0];
+        choosePlayer.style.display = 'none';
+    });
+
+    //console.log(this.sprite);
+    char2.addEventListener('click', function(){
+        this.sprite = character[1];
+        choosePlayer.style.display = 'none';
+        console.log(this.sprite);
+    });
+
 
     if (this.keyPressed === 'left' && this.x > 0) {
         this.x = this.x - 100;
@@ -280,20 +299,3 @@ document.addEventListener('keyup', function(e) {
 });
 
 
-
-/*
-* Modal popup
-*/ 
-/*var modal = document.getElementById('gameScore');
-var noButton = document.getElementById('noButton');
-var yesButton = document.getElementById('yesButton'); 
-var gameOver = document.getElementById('gameOver');
-
-noButton.addEventListener('click', function() {
-    modal.style.display = 'none';
-    gameOver.style.display = 'block';
-})
-
-yesButton.addEventListener('click', function() {
-    window.location.reload();
-})*/
