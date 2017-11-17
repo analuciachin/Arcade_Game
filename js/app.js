@@ -48,7 +48,10 @@ var Player = function() {
 
 Player.prototype.update = function() {
     var score = document.querySelector('span.score');
-    var collectables = document.querySelector('span.collectables'); 
+    var collectables = document.querySelector('span.collectables');
+    var gameScoreModal = document.getElementById('gameScore');
+    var resetButton = document.getElementById('resetButton'); 
+
     this.currentX = player.x;
     this.currentY = player.y;
     //console.log(player.y);
@@ -71,6 +74,7 @@ Player.prototype.update = function() {
         setTimeout(function() {
             reset();
         }, 800);
+
     }
 
 
@@ -91,9 +95,6 @@ Player.prototype.update = function() {
         collectables.innerHTML = this.collectables;
         heart.x = -100;
         heart.y = -100;
-        if (this.collectables === 3) {
-            showResults();
-        }
     }
     
     if (player.x === key.x && player.y === key.y) {
@@ -101,9 +102,6 @@ Player.prototype.update = function() {
         collectables.innerHTML = this.collectables;
         key.x = -100;
         key.y = -100;
-        if (this.collectables === 3) {
-            showResults();
-        }
     }
     
     if (player.x === star.x && player.y === star.y) {
@@ -111,9 +109,6 @@ Player.prototype.update = function() {
         collectables.innerHTML = this.collectables;
         star.x = -100;
         star.y = -100;
-        if (this.collectables === 3) {
-            showResults();
-        }
     }
 
     for (var i=0; i<allRocks.length; i++) {
@@ -122,17 +117,36 @@ Player.prototype.update = function() {
             player.y = this.currentY;
         }
     }
+
+
+    if (this.collectables === 3 && this.y === -50 ) {
+        showResults();
+    }
    
+
+    if (gameScoreModal.style.display === 'block') {
+        this.x = 200;
+        this.y = 400;
+    }   
+
      
     function showResults() {
-        //var scoreResult = document.querySelector('span.scoreResult');
-        //var collectablesResult = document.querySelector('span.collectablesResult');
-        setTimeout (function() {
+        var scoreResult = document.querySelector('span.scoreResult');
+        var collectablesResult = document.querySelector('span.collectablesResult');
+        
         document.getElementById('gameScore').style.display = 'block';
-        //scoreResult.innerHTML = this.score;
-        //collectablesResult.innerHTML = this.collectables;
-        },5000);
+        scoreResult.innerHTML = score.innerHTML;
+        collectablesResult.innerHTML = collectables.innerHTML;
     }
+
+    resetButton.addEventListener('click', function() {
+        gameScoreModal.style.display = 'none';
+        resetGame();
+        /*this.score = 0;
+        this.collectables = 0;
+        score.innerHTML = this.score;
+        collectables.innerHTML = this.collectables;*/
+    });
 
 };
 
@@ -148,6 +162,34 @@ reset = function() {
     player.x = 200;
     player.y = 400;
 };
+
+resetGame = function () {
+    var score = document.querySelector('span.score');
+    var collectables = document.querySelector('span.collectables');
+    
+    player.x = 200;
+    player.y = 400;
+    
+    heart.x = 200;
+    heart.y = 130;
+    
+    key.x = 0;
+    key.y = 40;
+
+    star.x = 400;
+    star.y = 40;
+
+    allRocks[0].x = 400;
+    allRocks[0].y = 130;
+
+    allRocks[1].x = 200;
+    allRocks[1].y = 220;
+
+    player.score = 0;
+    player.collectables = 0;
+    score.innerHTML = player.score;
+    collectables.innerHTML = player.collectables;
+}
 
 
 //****************** Heart ***********************//
@@ -242,12 +284,12 @@ document.addEventListener('keyup', function(e) {
 /*
 * Modal popup
 */ 
-var modal = document.getElementById('gameScore');
+/*var modal = document.getElementById('gameScore');
 var noButton = document.getElementById('noButton');
 var yesButton = document.getElementById('yesButton'); 
 var gameOver = document.getElementById('gameOver');
 
-/*noButton.addEventListener('click', function() {
+noButton.addEventListener('click', function() {
     modal.style.display = 'none';
     gameOver.style.display = 'block';
 })
