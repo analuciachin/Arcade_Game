@@ -100,22 +100,6 @@ Player.prototype.update = function() {
     this.currentY = player.y;
     //console.log(player.y);
 
-/*
-    var character = ['images/char-horn-girl.png','images/char-cat-girl.png'];
-    var choosePlayer = document.getElementById('choosePlayer');
-
-    char1.addEventListener('click', function(){
-        this.sprite = character[0];
-        choosePlayer.style.display = 'none';
-    });
-
-    //console.log(this.sprite);
-    char2.addEventListener('click', function(){
-        this.sprite = character[1];
-        choosePlayer.style.display = 'none';
-        console.log(this.sprite);
-    });
-*/
 
     if (this.keyPressed === 'left' && this.x > 0) {
         this.x = this.x - 100;
