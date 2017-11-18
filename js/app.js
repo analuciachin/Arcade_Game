@@ -37,13 +37,56 @@ Enemy.prototype.render = function() {
 
 //****************** Player ************************//
 var Player = function() {
+    "use strict";
+
+    var allCharacter = ['images/char-boy.png','images/char-cat-girl.png', 'images/char-horn-girl.png',
+                    'images/char-pink-girl.png', 'images/char-princess-girl.png'];
+    var choosePlayer = document.getElementById('choosePlayer');
+    
+    var char0 = document.getElementById('char0');
+    var char1 = document.getElementById('char1');
+    var char2 = document.getElementById('char2');
+    var char3 = document.getElementById('char3');
+    var char4 = document.getElementById('char4');
+
     this.sprite = 'images/char-boy.png';
+   
+
+    char0.addEventListener('click', function(){
+        player.sprite = allCharacter[0];
+        choosePlayer.style.display = 'none';       
+    });
+
+    char1.addEventListener('click', function(){
+        player.sprite = allCharacter[1];
+        choosePlayer.style.display = 'none';       
+    });
+    
+    char2.addEventListener('click', function(){
+        player.sprite = allCharacter[2];
+        choosePlayer.style.display = 'none';       
+    });
+
+    char3.addEventListener('click', function(){
+        player.sprite = allCharacter[3];
+        choosePlayer.style.display = 'none';       
+    });
+
+    char4.addEventListener('click', function(){
+        player.sprite = allCharacter[4];
+        choosePlayer.style.display = 'none';       
+    });    
+
+    //console.log(this.sprite);
+    //this.sprite = 'images/char-boy.png';
     this.x = 200;
     this.y = 400;
     this.score = 0;
     this.currentX = 0;
     this.currentY = 0;
     this.collectables = 0;
+
+
 };
 
 Player.prototype.update = function() {
@@ -51,14 +94,13 @@ Player.prototype.update = function() {
     var collectables = document.querySelector('span.collectables');
     var gameScoreModal = document.getElementById('gameScore');
     var resetButton = document.getElementById('resetButton'); 
-    var char1 = document.getElementById('char1');
-    var char2 = document.getElementById('char2');
+
 
     this.currentX = player.x;
     this.currentY = player.y;
     //console.log(player.y);
 
-
+/*
     var character = ['images/char-horn-girl.png','images/char-cat-girl.png'];
     var choosePlayer = document.getElementById('choosePlayer');
 
@@ -73,7 +115,7 @@ Player.prototype.update = function() {
         choosePlayer.style.display = 'none';
         console.log(this.sprite);
     });
-
+*/
 
     if (this.keyPressed === 'left' && this.x > 0) {
         this.x = this.x - 100;
