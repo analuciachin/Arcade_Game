@@ -1,11 +1,9 @@
 //**************** Enemy **********************//
 
 var Enemy = function(x,y) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+    // Load the image, set enemy's initial position and speed
+    // Speed calculation based on: https://www.w3schools.com/jsref/jsref_random.asp
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
@@ -14,10 +12,11 @@ var Enemy = function(x,y) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
+
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    // Multiply any movement by the dt parameter to ensure the game runs at the same
+    // speed for all computers
+
     if (this.x < 450) {
         this.x = this.x + this.speed * dt;
     } else {
@@ -30,14 +29,14 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 
 
 //****************** Player ************************//
 var Player = function() {
     "use strict";
+    
+    // Choose the caracter before starting the game
+    // Set player's initial position, score and collectables
 
     var allCharacter = ['images/char-boy.png','images/char-cat-girl.png', 'images/char-horn-girl.png',
                     'images/char-pink-girl.png', 'images/char-princess-girl.png'];
@@ -77,8 +76,7 @@ var Player = function() {
         choosePlayer.style.display = 'none';       
     });    
 
-    //console.log(this.sprite);
-    //this.sprite = 'images/char-boy.png';
+    
     this.x = 200;
     this.y = 400;
     this.score = 0;
@@ -98,8 +96,8 @@ Player.prototype.update = function() {
 
     this.currentX = player.x;
     this.currentY = player.y;
-    //console.log(player.y);
-
+    
+    // Update player's position
 
     if (this.keyPressed === 'left' && this.x > 0) {
         this.x = this.x - 100;
@@ -122,8 +120,10 @@ Player.prototype.update = function() {
 
     }
 
-
     this.keyPressed = undefined;
+
+
+    // Reset player's position when a collision occurs
 
     for (var i=0; i<allEnemies.length; i++) {
         if (player.y === allEnemies[i].y && (player.x - allEnemies[i].x > 0 
@@ -134,6 +134,9 @@ Player.prototype.update = function() {
         }
     }
 
+
+    // Remove the collectables (heart, star and key) from the board when the 
+    // player gets them and unable player to go to a position where there is a rock
 
     if (player.x === heart.x && player.y === heart.y) {
         this.collectables = this.collectables + 1;
@@ -163,18 +166,21 @@ Player.prototype.update = function() {
         }
     }
 
+    // Game finishes when player gets all 3 collectables and reaches the water
 
     if (this.collectables === 3 && this.y === -50 ) {
         showResults();
     }
    
+    // Block the player's movement after the game over modal appears
 
     if (gameScoreModal.style.display === 'block') {
         this.x = 200;
         this.y = 400;
     }   
 
-     
+    // Show results when the game is over
+
     function showResults() {
         var scoreResult = document.querySelector('span.scoreResult');
         var collectablesResult = document.querySelector('span.collectablesResult');
@@ -187,10 +193,6 @@ Player.prototype.update = function() {
     resetButton.addEventListener('click', function() {
         gameScoreModal.style.display = 'none';
         resetGame();
-        /*this.score = 0;
-        this.collectables = 0;
-        score.innerHTML = this.score;
-        collectables.innerHTML = this.collectables;*/
     });
 
 };
@@ -199,15 +201,20 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Handle the user's input for the player movement in the board
+
 Player.prototype.handleInput = function(keyPressed) {
     this.keyPressed = keyPressed;
 };
 
+
+// Reset the player position when enemy hits the player
 reset = function() {
     player.x = 200;
     player.y = 400;
 };
 
+// Reset the game when player gets all 3 collectables and reaches the water
 resetGame = function () {
     var score = document.querySelector('span.score');
     var collectables = document.querySelector('span.collectables');
@@ -292,9 +299,8 @@ Rock.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+
+//********* Instantiate all objects **************//
 
 var allEnemies = [];
 allEnemies.push(new Enemy(0,220), new Enemy(0,130), new Enemy(0,40));
@@ -311,8 +317,9 @@ var star = new Star(400,40);
 var allRocks = [];
 allRocks.push(new Rock (400,130), new Rock (200,220));
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+
+// Listens for key presses and sends the keys to 
+// Player.handleInput() method. 
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',

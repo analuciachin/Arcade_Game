@@ -1,6 +1,17 @@
-frontend-nanodegree-arcade-game
-===============================
+Front-end Nanodegree Arcade Game
+====================================
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+How to play the game
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+1) Open the index.html file
+
+2) Choose your player
+
+3) To win the game, you have to get all 3 collectables and also reach the water
+	3.1) Every time you reach the water, adds 1 point in your score
+	3.2) If the enemy hits you, you lose 1 point in the score
+	3.3) You can not move to a position if there is a rock
+	3.4) You have to get all 3 collectables in order to win the game
+
+4) After the game is over, you have an option to reset the game
+	4.1) If you reset the game, the score and collectables will be zero and the player's position is reset
