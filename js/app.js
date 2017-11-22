@@ -1,6 +1,7 @@
 //**************** Enemy **********************//
 
 var Enemy = function(x,y) {
+    "use strict";
     // Load the image, set enemy's initial position and speed
     // Speed calculation based on: https://www.w3schools.com/jsref/jsref_random.asp
 
@@ -41,12 +42,12 @@ var Player = function() {
     var allCharacter = ['images/char-boy.png','images/char-cat-girl.png', 'images/char-horn-girl.png',
                     'images/char-pink-girl.png', 'images/char-princess-girl.png'];
     var choosePlayer = document.getElementById('choosePlayer');
-    
-    var char0 = document.getElementById('char0');
-    var char1 = document.getElementById('char1');
-    var char2 = document.getElementById('char2');
-    var char3 = document.getElementById('char3');
-    var char4 = document.getElementById('char4');
+
+    for (var i=0; i < allCharacter.length; i++) {
+        var character = 'char' + i;
+        character = document.getElementById(character);
+    }
+
 
     this.sprite = 'images/char-boy.png';
    
@@ -115,7 +116,7 @@ Player.prototype.update = function() {
         this.score = this.score + 1;
         score.innerHTML = this.score;
         setTimeout(function() {
-            reset();
+            player.reset();
         }, 800);
 
     }
@@ -123,51 +124,14 @@ Player.prototype.update = function() {
     this.keyPressed = undefined;
 
 
-    // Reset player's position when a collision occurs
-
-    for (var i=0; i<allEnemies.length; i++) {
-        if (player.y === allEnemies[i].y && (player.x - allEnemies[i].x > 0 
-        && player.x - allEnemies[i].x < 50)) { 
-            reset();
-            player.score = player.score - 1;
-            score.innerHTML = player.score;
-        }
-    }
-
-
-    // Remove the collectables (heart, star and key) from the board when the 
-    // player gets them and unable player to go to a position where there is a rock
-
-    if (player.x === heart.x && player.y === heart.y) {
-        this.collectables = this.collectables + 1;
-        collectables.innerHTML = this.collectables;
-        heart.x = -100;
-        heart.y = -100;
-    }
     
-    if (player.x === key.x && player.y === key.y) {
-        this.collectables = this.collectables + 1;
-        collectables.innerHTML = this.collectables;
-        key.x = -100;
-        key.y = -100;
-    }
-    
-    if (player.x === star.x && player.y === star.y) {
-        this.collectables = this.collectables + 1;
-        collectables.innerHTML = this.collectables;
-        star.x = -100;
-        star.y = -100;
-    }
+    player.checkEnemyCollisions();
+    player.getCollectables();
+    player.checkRockCollisions();
 
-    for (var i=0; i<allRocks.length; i++) {
-        if (player.x === allRocks[i].x && player.y === allRocks[i].y) {
-            player.x = this.currentX;
-            player.y = this.currentY;
-        }
-    }
 
     // Game finishes when player gets all 3 collectables and reaches the water
-
+    
     if (this.collectables === 3 && this.y === -50 ) {
         showResults();
     }
@@ -202,17 +166,68 @@ Player.prototype.render = function() {
 };
 
 // Handle the user's input for the player movement in the board
-
 Player.prototype.handleInput = function(keyPressed) {
     this.keyPressed = keyPressed;
 };
 
 
-// Reset the player position when enemy hits the player
-reset = function() {
+// Reset the player's position when a collision with the enemy occurs
+Player.prototype.reset = function() {
     player.x = 200;
     player.y = 400;
 };
+
+// Reset player's position when a enemy collision occurs
+Player.prototype.checkEnemyCollisions = function() {
+    var score = document.querySelector('span.score');
+
+    for (var i=0; i<allEnemies.length; i++) {
+        if (player.y === allEnemies[i].y && (player.x - allEnemies[i].x > 0 
+        && player.x - allEnemies[i].x < 50)) { 
+            player.reset();
+            player.score = player.score - 1;
+            score.innerHTML = player.score;
+        }
+    }
+}
+
+// Remove the collectables (heart, star and key) from the board when the 
+// player gets them and unable player to go to a position where there is a rock
+Player.prototype.getCollectables = function() {
+    var collectables = document.querySelector('span.collectables');
+
+    if (player.x === heart.x && player.y === heart.y) {
+        this.collectables = this.collectables + 1;
+        collectables.innerHTML = this.collectables;
+        heart.x = -100;
+        heart.y = -100;
+    }
+    
+    if (player.x === key.x && player.y === key.y) {
+        this.collectables = this.collectables + 1;
+        collectables.innerHTML = this.collectables;
+        key.x = -100;
+        key.y = -100;
+    }
+    
+    if (player.x === star.x && player.y === star.y) {
+        this.collectables = this.collectables + 1;
+        collectables.innerHTML = this.collectables;
+        star.x = -100;
+        star.y = -100;
+    }
+}
+
+// Unable player for moving to a rock's position
+Player.prototype.checkRockCollisions = function() {
+    for (var i=0; i<allRocks.length; i++) {
+        if (player.x === allRocks[i].x && player.y === allRocks[i].y) {
+            player.x = this.currentX;
+            player.y = this.currentY;
+        }
+    }
+}
+
 
 // Reset the game when player gets all 3 collectables and reaches the water
 resetGame = function () {
@@ -247,6 +262,8 @@ resetGame = function () {
 //****************** Heart ***********************//
 
 var Heart = function(x,y) {
+    "use strict";
+
     this.sprite = 'images/Heart.png';
     this.x = x;
     this.y = y;
@@ -261,6 +278,8 @@ Heart.prototype.render = function() {
 //****************** Key *************************//
 
 var Key = function(x,y) {
+    "use strict";
+
     this.sprite = 'images/Key.png';
     this.x = x;
     this.y = y;
@@ -275,6 +294,8 @@ Key.prototype.render = function() {
 //***************** Star ************************//
 
 var Star = function(x,y) {
+    "use strict";
+
     this.sprite = 'images/Star.png';
     this.x = x;
     this.y = y;
@@ -289,6 +310,8 @@ Star.prototype.render = function() {
 //***************** Rock ************************//
 
 var Rock = function(x,y) {
+    "use strict";
+
     this.sprite = 'images/Rock.png';
     this.x = x;
     this.y = y;
