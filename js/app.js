@@ -48,7 +48,6 @@ var Player = function() {
         character = document.getElementById(character);
     }
 
-
     this.sprite = 'images/char-boy.png';
    
 
@@ -95,8 +94,11 @@ Player.prototype.update = function() {
     var resetButton = document.getElementById('resetButton'); 
 
 
+    // currentX and currentY are used to update the player's position in the checkRockCollisions function
+
     this.currentX = player.x;
     this.currentY = player.y;
+
     
     // Update player's position
 
@@ -173,20 +175,20 @@ Player.prototype.handleInput = function(keyPressed) {
 
 // Reset the player's position when a collision with the enemy occurs
 Player.prototype.reset = function() {
-    player.x = 200;
-    player.y = 400;
+    this.x = 200;
+    this.y = 400;
 };
 
 // Reset player's position when a enemy collision occurs
 Player.prototype.checkEnemyCollisions = function() {
     var score = document.querySelector('span.score');
 
-    for (var i=0; i<allEnemies.length; i++) {
-        if (player.y === allEnemies[i].y && (player.x - allEnemies[i].x > 0 
-        && player.x - allEnemies[i].x < 50)) { 
-            player.reset();
-            player.score = player.score - 1;
-            score.innerHTML = player.score;
+    for (var i=0; i < allEnemies.length; i++) {
+        if (this.y === allEnemies[i].y && (this.x - allEnemies[i].x > 0 
+        && this.x - allEnemies[i].x < 50)) { 
+            this.reset();
+            this.score = this.score - 1;
+            score.innerHTML = this.score;
         }
     }
 }
@@ -196,21 +198,21 @@ Player.prototype.checkEnemyCollisions = function() {
 Player.prototype.getCollectables = function() {
     var collectables = document.querySelector('span.collectables');
 
-    if (player.x === heart.x && player.y === heart.y) {
+    if (this.x === heart.x && this.y === heart.y) {
         this.collectables = this.collectables + 1;
         collectables.innerHTML = this.collectables;
         heart.x = -100;
         heart.y = -100;
     }
     
-    if (player.x === key.x && player.y === key.y) {
+    if (this.x === key.x && this.y === key.y) {
         this.collectables = this.collectables + 1;
         collectables.innerHTML = this.collectables;
         key.x = -100;
         key.y = -100;
     }
     
-    if (player.x === star.x && player.y === star.y) {
+    if (this.x === star.x && this.y === star.y) {
         this.collectables = this.collectables + 1;
         collectables.innerHTML = this.collectables;
         star.x = -100;
@@ -220,10 +222,10 @@ Player.prototype.getCollectables = function() {
 
 // Unable player for moving to a rock's position
 Player.prototype.checkRockCollisions = function() {
-    for (var i=0; i<allRocks.length; i++) {
-        if (player.x === allRocks[i].x && player.y === allRocks[i].y) {
-            player.x = this.currentX;
-            player.y = this.currentY;
+    for (var i=0; i < allRocks.length; i++) {
+        if (this.x === allRocks[i].x && this.y === allRocks[i].y) {
+            this.x = this.currentX;
+            this.y = this.currentY;
         }
     }
 }
@@ -256,7 +258,7 @@ resetGame = function () {
     player.collectables = 0;
     score.innerHTML = player.score;
     collectables.innerHTML = player.collectables;
-}
+};
 
 
 //****************** Heart ***********************//
