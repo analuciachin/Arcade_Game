@@ -1,15 +1,35 @@
-//**************** Enemy **********************//
+//************* Game Element *******************//
+// Superclass constructor will create the properties and method common to all objects
+// Enemy, Player, Heart, Star, Key and Rock objects will inherit from the Game Element object
 
-var Enemy = function(x,y) {
+var GameElement = function(x,y,sprite) {
     "use strict";
-    // Load the image, set enemy's initial position and speed
-    // Speed calculation based on: https://www.w3schools.com/jsref/jsref_random.asp
+    // Load the image and set game element's initial position
 
-    this.sprite = 'images/enemy-bug.png';
+    this.sprite = sprite;
     this.x = x;
     this.y = y;
+};
+
+// Draw the game element on the screen, required method for game
+GameElement.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+//**************** Enemy **********************//
+
+var Enemy = function(x,y,sprite) {
+    "use strict";
+
+    GameElement.call(this,x,y,sprite);
+    
+    // Speed calculation based on: https://www.w3schools.com/jsref/jsref_random.asp
     this.speed = Math.floor((Math.random() * 200) + 100);
 };
+
+Enemy.prototype = Object.create(GameElement.prototype);
+Enemy.prototype.constructor = Enemy;
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -25,19 +45,12 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-
 
 //****************** Player ************************//
-var Player = function() {
+var Player = function(x,y,sprite) {
     "use strict";
     
     // Choose the caracter before starting the game
-    // Set player's initial position, score and collectables
 
     var allCharacter = ['images/char-boy.png','images/char-cat-girl.png', 'images/char-horn-girl.png',
                     'images/char-pink-girl.png', 'images/char-princess-girl.png'];
@@ -49,7 +62,7 @@ var Player = function() {
         character = document.getElementById(character);
     }
 
-    this.sprite = 'images/char-boy.png';
+    GameElement.call(this,x,y,sprite);
    
 
     char0.addEventListener('click', function() {
@@ -77,16 +90,17 @@ var Player = function() {
         choosePlayer.style.display = 'none';       
     }.bind(this));    
 
-    
-    this.x = 200;
-    this.y = 400;
+
     this.score = 0;
     this.currentX = 0;
     this.currentY = 0;
     this.collectables = 0;
 
-
 };
+
+
+Player.prototype = Object.create(GameElement.prototype);
+Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
     var score = document.querySelector('span.score');
@@ -164,9 +178,6 @@ Player.prototype.update = function() {
 
 };
 
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
 
 // Handle the user's input for the player movement in the board
 Player.prototype.handleInput = function(keyPressed) {
@@ -224,7 +235,9 @@ Player.prototype.getCollectables = function() {
 
 // Unable player for moving to a rock's position
 Player.prototype.checkRockCollisions = function() {
-    for (var i=0; i < allRocks.length; i++) {
+    var allRocksLength = allRocks.length;
+
+    for (var i=0; i < allRocksLength; i++) {
         if (this.x === allRocks[i].x && this.y === allRocks[i].y) {
             this.x = this.currentX;
             this.y = this.currentY;
@@ -265,84 +278,73 @@ resetGame = function () {
 
 //****************** Heart ***********************//
 
-var Heart = function(x,y) {
+var Heart = function(x,y,sprite) {
     "use strict";
 
-    this.sprite = 'images/Heart.png';
-    this.x = x;
-    this.y = y;
+    GameElement.call(this,x,y,sprite);
 };
 
-
-Heart.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+Heart.prototype = Object.create(GameElement.prototype);
+Heart.prototype.constructor = Heart;
 
 
 //****************** Key *************************//
 
-var Key = function(x,y) {
+var Key = function(x,y,sprite) {
     "use strict";
 
-    this.sprite = 'images/Key.png';
-    this.x = x;
-    this.y = y;
+    GameElement.call(this,x,y,sprite);
 };
 
-
-Key.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+Key.prototype = Object.create(GameElement.prototype);
+Key.prototype.constructor = Key;
 
 
 //***************** Star ************************//
 
-var Star = function(x,y) {
+var Star = function(x,y,sprite) {
     "use strict";
 
-    this.sprite = 'images/Star.png';
-    this.x = x;
-    this.y = y;
+    GameElement.call(this,x,y,sprite);
 };
 
 
-Star.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+Star.prototype = Object.create(GameElement.prototype);
+Star.prototype.constructor = Star;
 
 
 //***************** Rock ************************//
 
-var Rock = function(x,y) {
+var Rock = function(x,y,sprite) {
     "use strict";
 
-    this.sprite = 'images/Rock.png';
-    this.x = x;
-    this.y = y;
+    GameElement.call(this,x,y,sprite);
 };
 
 
-Rock.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+Rock.prototype = Object.create(GameElement.prototype);
+Rock.prototype.constructor = Rock;
 
 
 //********* Instantiate all objects **************//
 
 var allEnemies = [];
-allEnemies.push(new Enemy(0,220), new Enemy(0,130), new Enemy(0,40));
+allEnemies.push(new Enemy(0,220,'images/enemy-bug.png'), 
+                new Enemy(0,130,'images/enemy-bug.png'), 
+                new Enemy(0,40,'images/enemy-bug.png'));
 
 
-var player = new Player();
+var player = new Player(200,400,'images/char-boy.png');
 
-var heart = new Heart(200,130);
+var heart = new Heart(200,130,'images/Heart.png');
 
-var key = new Key(0,40);
+var key = new Key(0,40,'images/Key.png');
 
-var star = new Star(400,40);
+var star = new Star(400,40,'images/Star.png');
 
 var allRocks = [];
-allRocks.push(new Rock (400,130), new Rock (200,220));
+allRocks.push(new Rock (400,130,'images/Rock.png'), 
+              new Rock (200,220,'images/Rock.png'));
 
 
 // Listens for key presses and sends the keys to 
