@@ -42,8 +42,9 @@ var Player = function() {
     var allCharacter = ['images/char-boy.png','images/char-cat-girl.png', 'images/char-horn-girl.png',
                     'images/char-pink-girl.png', 'images/char-princess-girl.png'];
     var choosePlayer = document.getElementById('choosePlayer');
+    var allCharacterLength = allCharacter.length;
 
-    for (var i=0; i < allCharacter.length; i++) {
+    for (var i=0; i < allCharacterLength; i++) {
         var character = 'char' + i;
         character = document.getElementById(character);
     }
@@ -51,30 +52,30 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
    
 
-    char0.addEventListener('click', function(){
-        player.sprite = allCharacter[0];
+    char0.addEventListener('click', function() {
+        this.sprite = allCharacter[0];
         choosePlayer.style.display = 'none';       
-    });
+    }.bind(this));
 
     char1.addEventListener('click', function(){
-        player.sprite = allCharacter[1];
+        this.sprite = allCharacter[1];
         choosePlayer.style.display = 'none';       
-    });
+    }.bind(this));
     
     char2.addEventListener('click', function(){
-        player.sprite = allCharacter[2];
+        this.sprite = allCharacter[2];
         choosePlayer.style.display = 'none';       
-    });
+    }.bind(this));
 
     char3.addEventListener('click', function(){
-        player.sprite = allCharacter[3];
+        this.sprite = allCharacter[3];
         choosePlayer.style.display = 'none';       
-    });
+    }.bind(this));
 
     char4.addEventListener('click', function(){
-        player.sprite = allCharacter[4];
+        this.sprite = allCharacter[4];
         choosePlayer.style.display = 'none';       
-    });    
+    }.bind(this));    
 
     
     this.x = 200;
@@ -96,8 +97,8 @@ Player.prototype.update = function() {
 
     // currentX and currentY are used to update the player's position in the checkRockCollisions function
 
-    this.currentX = player.x;
-    this.currentY = player.y;
+    this.currentX = this.x;
+    this.currentY = this.y;
 
     
     // Update player's position
@@ -118,8 +119,8 @@ Player.prototype.update = function() {
         this.score = this.score + 1;
         score.innerHTML = this.score;
         setTimeout(function() {
-            player.reset();
-        }, 800);
+            this.reset();
+        }.bind(this), 800);
 
     }
 
@@ -127,9 +128,9 @@ Player.prototype.update = function() {
 
 
     
-    player.checkEnemyCollisions();
-    player.getCollectables();
-    player.checkRockCollisions();
+    this.checkEnemyCollisions();
+    this.getCollectables();
+    this.checkRockCollisions();
 
 
     // Game finishes when player gets all 3 collectables and reaches the water
@@ -182,8 +183,9 @@ Player.prototype.reset = function() {
 // Reset player's position when a enemy collision occurs
 Player.prototype.checkEnemyCollisions = function() {
     var score = document.querySelector('span.score');
+    var allEnemiesLength = allEnemies.length;
 
-    for (var i=0; i < allEnemies.length; i++) {
+    for (var i=0; i < allEnemiesLength; i++) {
         if (this.y === allEnemies[i].y && (this.x - allEnemies[i].x > 0 
         && this.x - allEnemies[i].x < 50)) { 
             this.reset();
