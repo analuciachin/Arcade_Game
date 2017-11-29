@@ -204,7 +204,7 @@ Player.prototype.checkEnemyCollisions = function() {
             score.innerHTML = this.score;
         }
     }
-}
+};
 
 // Remove the collectables (heart, star and key) from the board when the 
 // player gets them and unable player to go to a position where there is a rock
@@ -231,7 +231,7 @@ Player.prototype.getCollectables = function() {
         star.x = -100;
         star.y = -100;
     }
-}
+};
 
 // Unable player for moving to a rock's position
 Player.prototype.checkRockCollisions = function() {
@@ -243,7 +243,7 @@ Player.prototype.checkRockCollisions = function() {
             this.y = this.currentY;
         }
     }
-}
+};
 
 
 // Reset the game when player gets all 3 collectables and reaches the water
